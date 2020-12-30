@@ -62,25 +62,25 @@ void Entity::onMessageReceived( std::unique_ptr<class Message> msg )
 	
 	switch ( pDataMsg->getType() )
 	{
-	case MessageType::Damage:
+	case Message::Type::Damage:
 	{
 		//m_hp -= payload->m_damage;
 		std::cout << "Damage message received" << '\n';
 		break;
 	}
-	case MessageType::Heal:
+	case Message::Type::Heal:
 	{
 		//m_hp += payload->m_heal;
 		std::cout << "Heal message received" << '\n';
 		break;
 	}
-	case MessageType::Greet:
+	case Message::Type::Greet:
 	{
 		//greet( payload->m_greeting );
 		std::cout << "Greet message received" << '\n';
 		break;
 	}
-	case MessageType::PhysicsCollision:
+	case Message::Type::PhysicsCollision:
 	{
 		std::cout << "Physics collision received" << '\n';
 		break;

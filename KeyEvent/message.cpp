@@ -5,7 +5,7 @@
 
 Message::Message( Entity* pSrc,
 	const std::vector<Entity*>& pDests,
-	MessageType type )
+	Message::Type type )
 	:
 	m_pSender( pSrc ),
 	m_type( type )
@@ -52,7 +52,7 @@ Message& Message::operator=( Message&& rhs ) noexcept
 	return *this;
 }
 
-MessageType Message::getType() const noexcept
+Message::Type Message::getType() const noexcept
 {
 	return m_type;
 }
@@ -80,7 +80,7 @@ void Message::setHandled( bool b ) noexcept
 
 MessageCall::MessageCall( Entity* psrc,
 	const std::vector<Entity*>& pDests,
-	MessageType type,
+	Message::Type type,
 	std::unique_ptr<DelayedFunc> df )
 	:
 	Message( psrc, pDests, type ),

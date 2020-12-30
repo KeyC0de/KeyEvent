@@ -1,11 +1,10 @@
 #pragma once
 
-#include <sdkddkver.h>	// applies default values to windows defines, 
-						//	unless some are already defined (eg _WIN32_WINNT)
 #undef _WIN32_WINNT
 #undef NTDDI_VERSION
 #define _WIN32_WINNT _WIN32_WINNT_WINBLUE
 #define NTDDI_VERSION NTDDI_WINBLUE
+#include <sdkddkver.h>
 
 #ifndef _MSC_VER
 static_assert( false, "Non Windows Platform - Nah huh\n" );

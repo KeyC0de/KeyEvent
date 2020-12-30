@@ -43,7 +43,7 @@ int main()
 	// Entities want to communicate with each other so they send messages
 
 	// suppose we want e1 to send a "Damage" message to e2
-	// you can create whatever type of MessageType you want
+	// you can create whatever type of Message::Type you want
 	//	as well as call whichever function of e2 you want
 	auto e1CallLater( DelayedFunc::setup( &Entity::damage, &e2, 50 ) );
 	// e1 creates the message to dispatch it
@@ -52,7 +52,7 @@ int main()
 
 	MessageCall* msg = new MessageCall{ &e1,
 		recipients,
-		MessageType::Damage,
+		Message::Type::Damage,
 		std::move( e1CallLater )};
 
 	// send the message - it gets posted to the dispatcher

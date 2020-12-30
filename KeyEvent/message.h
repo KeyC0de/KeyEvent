@@ -4,15 +4,6 @@
 #include <vector>
 
 
-enum class MessageType
-{
-	Idle = 0,
-	Damage,
-	Heal,
-	Greet,
-	PhysicsCollision
-};
-
 class Entity;
 class DelayedFunc;
 
@@ -26,22 +17,31 @@ class DelayedFunc;
 //=============================================================
 class Message
 {
+public:
+	enum class Type
+	{
+		Idle = 0,
+		Damage,
+		Heal,
+		Greet,
+		PhysicsCollision
+	};
 private:
 	bool m_bHandled = false;
 	class Entity* m_pSender;
 	std::vector<class Entity*> m_pReceivers;
-	MessageType m_type;
+	Message::Type m_type;
 
 public:
 	Message( class Entity* srcId, const std::vector<class Entity*>& destId,
-		MessageType type );
+		Message::Type type );
 	virtual ~Message() noexcept;
 	Message( const Message& rhs ) = delete;
 	Message& operator=( const Message& rhs ) = delete;
 	Message( Message&& rhs ) noexcept;
 	Message& operator=( Message&& rhs ) noexcept;
 
-	MessageType getType() const noexcept;
+	Message::Type getType() const noexcept;
 	class Entity* getSender() noexcept;
 	std::vector<class Entity*>& getReceivers() noexcept;
 	bool isHandled() const noexcept;
@@ -65,7 +65,7 @@ class MessageCall
 	std::unique_ptr<class DelayedFunc> m_pDelFunc;
 public:
 	MessageCall( class Entity* psrc, const std::vector<class Entity*>& pDests,
-		MessageType type, std::unique_ptr<DelayedFunc> df );
+		Message::Type type, std::unique_ptr<DelayedFunc> df );
 	virtual ~MessageCall() noexcept = default;
 	MessageCall( MessageCall&& rhs ) noexcept;
 	MessageCall& operator=( MessageCall&& rhs ) noexcept;
@@ -93,7 +93,7 @@ public:
 	template<typename ... TParams>
 	DataMessage( class Entity* src,
 		const std::vector<class Entity*>& pDests,
-		MessageType type,
+		Message::Type type,
 		TParams&&... args )
 		:
 		Message( src, pDests, type ),
