@@ -2,6 +2,8 @@
 
 #include <functional>
 #include <memory>
+
+
 //===================================================
 //	\function	DelayedFunc
 //	\brief  returns a ready-made callable with its arguments,
@@ -26,7 +28,7 @@ public:
 		return std::unique_ptr<DelayedFunc>( new DelayedFunc(
 			std::bind( std::forward<TFunction>( f ),
 				std::forward<TArgs>( args )... ) ) );
-    }
+	}
 	// TRet( *f )( std::forward<TArgs>( args )... );
 
 	template <typename TMethod,

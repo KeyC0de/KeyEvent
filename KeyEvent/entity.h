@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 
+
 // An Entity class for message testing
 
 // example message Payload1
@@ -27,12 +28,10 @@ public:
 	int damage( int amount );
 	int heal( int amount );
 	void greet( const std::string& str ) const noexcept;
-	
 	std::string getName() const noexcept;
 	std::size_t getId() const noexcept;
 	void printInfo() const noexcept;
 
 	void onMessageReceived( std::unique_ptr<class Message> msg );
-
 	void sendMessage( class Message* msg ) const noexcept;
 };

@@ -5,6 +5,7 @@
 #include <condition_variable>
 #include <memory>
 
+
 class Message;
 
 //============================================================

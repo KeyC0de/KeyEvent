@@ -3,6 +3,7 @@
 #include "entity.h"
 #include "assertions.h"
 
+
 void MessageBus::removeFrontByBackSwap()
 {
 	std::swap( m_vec.front(), m_vec.back() );
@@ -157,7 +158,7 @@ void MessageDispatcher::dispatchAll()
 		auto msg = m_mb.dequeue();
 		auto recipients = msg->getReceivers();
 		ASSERT( recipients.size() != 0,
-			L"No recipients!" );
+			"No recipients!" );
 		for ( Entity* r : recipients )
 		{
 			r->onMessageReceived( std::move( msg ) );

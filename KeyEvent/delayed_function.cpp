@@ -1,5 +1,6 @@
 #include "delayed_function.h"
 
+
 DelayedFunc::DelayedFunc( TF&& f )
 	:
 	m_f( std::forward<TF>( f ) )

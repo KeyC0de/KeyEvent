@@ -1,21 +1,32 @@
 #pragma once
 
+// AMD64 only
+static_assert( sizeof( void* ) == 8 );
+static_assert( sizeof( size_t ) == 8 );
+
+#ifndef _MSC_VER
+static_assert( false, "Non Windows Platform - Nah huh\n" );
+#endif // !_MSC_VER
+
+static_assert( _MSC_VER >= 1900,
+	"Microsoft Visual Studio 2015 or later compiler required." );
+static_assert( __cplusplus >= 201703L,
+	"C++17 language conformance or later required. Use /Zc:__cplusplus compile option." );
+static_assert( _MSVC_LANG >= 201703L,
+	"C++17 language conformance or later required." );
+
 #undef _WIN32_WINNT
 #undef NTDDI_VERSION
 #define _WIN32_WINNT _WIN32_WINNT_WINBLUE
 #define NTDDI_VERSION NTDDI_WINBLUE
 #include <sdkddkver.h>
 
-#ifndef _MSC_VER
-static_assert( false, "Non Windows Platform - Nah huh\n" );
-#endif // !_MSC_VER
-
 #ifndef USE_GDIPLUS
 // defines to get rid of superfluous Windows functionality
 // However GDI+ requires all the functionality that is disabled by these switches
 #	define WIN32_LEAN_AND_MEAN		// Cryptography, DDE, RPC, Shell, and Windows Sockets
 #	define NOGDICAPMASKS			// CC_*, LC_*, PC_*, CP_*, TC_*, RC_
-#	define NOVIRTUALKEYCODES		// VK_*
+//#	define NOVIRTUALKEYCODES		// VK_*
 //#	define NOWINMESSAGES			// WM_*, EM_*, LB_*, CB_*
 //#	define NOWINSTYLES				// WS_*, CS_*, ES_*, LBS_*, SBS_*, CBS_*
 //#	define NOSYSMETRICS				// SM_*
@@ -43,9 +54,10 @@ static_assert( false, "Non Windows Platform - Nah huh\n" );
 #	define NOSERVICE				// All SERVICE_ Controller routines
 //#	define NOSOUND					// Sound driver routines
 #	define NOIMAGE					// 
-#	define NOTEXTMETRIC				// typedef TEXTMETRIC and associated routines
+//#	define NOTEXTMETRIC				// typedef TEXTMETRIC and associated routines
+									// required by atlbase.h
 #	define NOWH						// SetWindowsHook and WH_*
-#	define NOWINOFFSETS				// GWL_*, GCL_*, associated routines
+//#	define NOWINOFFSETS				// GWL_*, GCL_*, associated routines
 #	define NOCOMM					// No serial communication API & driver routines
 #	define NOKANJI					// Kanji support
 #	define NOHELP					// Help engine interface
@@ -68,12 +80,11 @@ static_assert( false, "Non Windows Platform - Nah huh\n" );
 #endif
 
 #define NOMINMAX		// no windows min-max functions, we want the std:: mins & maxes
-#define STRICT			// enables Strict type checking for windows types
+#define STRICT			// enables Strict m_topo checking for windows types
 
 #define _CRT_SECURE_NO_DEPRECATE	// non-secure c/winapi functions are not deprecated
 #define _SCL_SECURE_NO_WARNINGS		// don't emit warnings for non-secure winapi functions
 //#define _ITERATOR_DEBUG_LEVEL	0	// disable checked iterators === #define _SECURE_SCL 0
-#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 #define _CRT_SECURE_NO_WARNINGS 1
 #define _WINSOCK_DEPRECATED_NO_WARNINGS 1
 
@@ -98,23 +109,6 @@ static_assert( false, "Non Windows Platform - Nah huh\n" );
 #define IDC_MYICON					2
 #define IDC_STATIC					-1
 
-
-// unicode preprocess
-#if defined(_UNICODE) || defined(UNICODE)
-#	define unicode
-#	if defined(_MSC_VER) || defined (_WIN32) || defined(_WIN64)
-#		define __function__ __FUNCTIONW__
-#	elif defined(GNUC) || defined(__linux__) || defined (__unix__) || defined (GNUG)
-#		define __function__ __PRETTY_FUNCTION__
-#	endif
-#else
-#	define ascii
-#	if defined(_MSC_VER) || defined (_WIN32) || defined(_WIN64)
-#		define __function__ __FUNCTION__
-#	elif defined(GNUC) || defined(__linux__) || defined(__unix__) || defined(GNUG)
-#		define __function__ __func__
-#	endif
-#endif
 
 // provides relocatable base address at RVA = 0
 extern "C" IMAGE_DOS_HEADER __ImageBase;
