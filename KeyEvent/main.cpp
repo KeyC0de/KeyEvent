@@ -6,7 +6,6 @@
 #include "message.h"
 #include "message_queue_bus_dispatcher.h"
 #include "entity.h"
-#include "global_manager.h"
 
 
 int getRandomInt()
@@ -60,20 +59,21 @@ int main()
 	e1.sendMessage( msg );
 
 	// check how many messages are tin the queue
-	std::cout << "Size="s << getGM.md.getSize() << '\n';
-	std::cout << "Capacity="s << getGM.md.getCapacity() << '\n';
+	auto& md = MessageDispatcher::getInstance();
+	std::cout << "Size="s << md.getSize() << '\n';
+	std::cout << "Capacity="s << md.getCapacity() << '\n';
 
 	// dispatch messages
-	getGM.md.dispatchAll();
+	md.dispatchAll();
 
-	std::cout << "Size="s << getGM.md.getSize() << '\n';
-	std::cout << "Capacity="s << getGM.md.getCapacity() << '\n';
+	std::cout << "Size="s << md.getSize() << '\n';
+	std::cout << "Capacity="s << md.getCapacity() << '\n';
 
 	e1.printInfo();
 	e2.printInfo();
 	
 	/// frame ends - clear the message queue
-	getGM.md.clear();
+	md.clear();
 	
 
 	std::system( "pause" );

@@ -136,7 +136,6 @@
     <ClInclude Include="assertions.h" />
     <ClInclude Include="delayed_function.h" />
     <ClInclude Include="entity.h" />
-    <ClInclude Include="global_manager.h" />
     <ClInclude Include="leak_checker.h" />
     <ClInclude Include="message_queue_bus_dispatcher.h" />
     <ClInclude Include="message.h" />

@@ -21,9 +21,6 @@
     <ClInclude Include="message.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="global_manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="delayed_function.h">
       <Filter>Header Files</Filter>
     </ClInclude>

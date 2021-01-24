@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "message.h"
 #include "delayed_function.h"
-#include "global_manager.h"
+#include "message_queue_bus_dispatcher.h"
 
 
 Entity::Entity( const std::string& name,
@@ -93,5 +93,6 @@ void Entity::onMessageReceived( std::unique_ptr<class Message> msg )
 
 void Entity::sendMessage( class Message* msg ) const noexcept
 {
-	getGM.md.addMessage( msg );
+	auto& md = MessageDispatcher::getInstance();
+	md.addMessage( msg );
 }
