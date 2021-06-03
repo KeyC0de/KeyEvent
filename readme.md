@@ -1,3 +1,9 @@
+<h1 align="center">
+	<a href="https://github.com/KeyC0de/KeyEvent">Key Event</a>
+</h1>
+<hr>
+
+
 In C++ particularly covariance allows an ovewritten virtual function's return type to be different from the base virtual function's return type, as long as its return type is inherited from the base virtual function's return type.
 
 C++ covariance is an important feature of the language that gives rise to a well known c++ idiom known as the virtual constructor. It allows classes of an inheritance hierarchy to override a derived member function's return type with one that inherits from the base member function's return type. This function is typically known as `clone()`. Thusly allowing the creation of a perfect replica of the current class.
@@ -20,20 +26,7 @@ returns a ready-made callable with its arguments,
 inspired by [this](https://stackoverflow.com/questions/30905968/how-do-i-store-a-vector-of-stdbind-without-a-specific-case-for-the-template#:~:text=Using%20std%3A%3Afunction%20seems,store%20them%20in%20a%20vector.) SO question as well as [this](https://stackoverflow.com/a/14833810/4743275) answer.
 
 
-# Tagline
-
-
-
-# Description
-
-
-
-# Usage
-
-
-
-# Prerequisites
-
+I used Windows 8.1 x86_64, Visual Studio 2017, Modern C++17 to build the project. It should work on other platforms as well.
 
 
 # Contribute
@@ -60,6 +53,7 @@ In MessageBus we use a
 	// otherwise using a lock_guard somebody wouldn't be able to enqueue and the program
 	//	would deadlock
 	// wait on the condition variable while there's nothing available on the Q
+
 
 # Acknowledgements
 
