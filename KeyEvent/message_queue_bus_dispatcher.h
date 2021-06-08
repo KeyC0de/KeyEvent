@@ -16,7 +16,7 @@ class Message;
 //
 //	\brief	thread safe event queue built from a Vector
 //			enqueue or dequeue whenever, wherever, we'll be together
-//			it pa-owns its contents
+//			it pa-owns its contents (Messages)
 //			move only
 //			accessible only from the MessageDispatcher friend class
 //=============================================================
@@ -44,7 +44,7 @@ public:
 
 	//===================================================
 	//	\function	enqueue
-	//	\brief  push_back() : enqueue from the back
+	//	\brief  push_back() : enqueue at the back
 	//	\date	2019/12/09 4:50
 	void enqueue( class Message* msg );
 	//===================================================
@@ -97,11 +97,11 @@ public:
 	void addMessage( class Message* msg );
 	//===================================================
 	//	\function	dispatchAll
-	//	\brief  dispatch all messages
+	//	\brief  dispatch all pending messages
 	//	\date	2019/12/10 4:47
 	void dispatchAll();
-	//dispatchByEventType
-	//dispatchEventsTargetedTo( specific actor )
+	//TODO: dispatchByEventType
+	//TODO: dispatchEventsTargetedTo( specific actor )
 	void clear();
 
 	std::size_t getSize() const noexcept;

@@ -55,6 +55,7 @@ void Entity::printInfo() const noexcept
 
 void Entity::onMessageReceived( std::unique_ptr<class Message> msg )
 {
+	// I. callback message payload
 	auto pDataMsg = dynamic_cast<MessageCall*>( msg.get() );
 
 	auto callback = pDataMsg->getCallable();
@@ -89,6 +90,8 @@ void Entity::onMessageReceived( std::unique_ptr<class Message> msg )
 		break;
 	}
 	pDataMsg->setHandled( true );
+
+	// TODO: II. data message payload
 }
 
 void Entity::sendMessage( class Message* msg ) const noexcept

@@ -1,5 +1,6 @@
 #pragma once
 
+
 // AMD64 only
 static_assert( sizeof( void* ) == 8 );
 static_assert( sizeof( size_t ) == 8 );
@@ -42,7 +43,9 @@ static_assert( _MSVC_LANG >= 201703L,
 #	define NOATOM					// Atom manager routines
 #	define NOCLIPBOARD				// Clipboard routines
 #	define NOCOLOR					// Screen colors
-#	define NOCTLMGR					// Control and Dialog routines
+#ifdef NO_DUMPS
+#	define NOCTLMGR					// Control and Dialog routines, generating dumps
+#endif // !TAKING_DUMPS
 #	define NODRAWTEXT				// DrawText() and DT_*
 #	define NOKERNEL					// KERNEL macros and routines
 //#	define NONLS					// NLS (Native Language Support) macros and routines
@@ -69,9 +72,9 @@ static_assert( _MSVC_LANG >= 201703L,
 #	define NOMCX					// no Media Center Extender (for xBox)
 #	define NOTAPE					// no Tape
 //#	define ANSI_ONLY				// no unicode support
-#	ifndef _DEBUG
+#	if defined NDEBUG || !defined _DEBUG 
 #		define NOPROFILER			// Profiler interface
-#	endif // _DEBUG
+#	endif // NDEBUG
 #endif
 
 #if defined( _MFC_VER ) || defined( _AFX )
@@ -79,13 +82,20 @@ static_assert( _MSVC_LANG >= 201703L,
 #	define VC_EXTRALEAN			// more trimming of windows headers for MFC only projects
 #endif
 
-#define NOMINMAX		// no windows min-max functions, we want the std:: mins & maxes
-#define STRICT			// enables Strict m_topo checking for windows types
+#ifndef NOMINMAX
+#	define NOMINMAX		// no windows min-max functions, we want the std:: mins & maxes
+#endif // !NOMINMAX
+#ifndef STRICT
+#	define STRICT		// enables Strict m_topo checking for windows types
+#endif // !STRICT
 
+#if defined NDEBUG || !defined _DEBUG 
+#	define _ITERATOR_DEBUG_LEVEL	0	// disable checked iterators & iterator debugging
+#endif // NDEBUG
+//#define _SECURE_SCL 0				// deprecated for _ITERATOR_DEBUG_LEVEL
 #define _CRT_SECURE_NO_DEPRECATE	// non-secure c/winapi functions are not deprecated
-#define _SCL_SECURE_NO_WARNINGS		// don't emit warnings for non-secure winapi functions
-//#define _ITERATOR_DEBUG_LEVEL	0	// disable checked iterators === #define _SECURE_SCL 0
 #define _CRT_SECURE_NO_WARNINGS 1
+#define _SCL_SECURE_NO_WARNINGS		// don't emit warnings for non-secure winapi functions
 #define _WINSOCK_DEPRECATED_NO_WARNINGS 1
 
 #ifdef _ALLOW_KEYWORD_MACROS

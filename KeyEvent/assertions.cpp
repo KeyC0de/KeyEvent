@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-#if defined _DEBUG && !defined _NDEBUG
+#if defined _DEBUG && !defined NDEBUG
 
 #ifdef __cplusplus
 extern "C" {

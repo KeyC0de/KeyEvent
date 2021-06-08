@@ -55,10 +55,10 @@ int main()
 		Message::Type::Damage,
 		std::move( e1CallLater )};
 
-	// send the message - it gets posted to the dispatcher
+	// send the message - it gets posted to the dispatcher which adds it to the MessageBus/EventQueue
 	e1.sendMessage( msg );
 
-	// check how many messages are tin the queue
+	// check how many messages are in the queue
 	auto& md = MessageDispatcher::getInstance();
 	std::cout << "Size="s << md.getSize() << '\n';
 	std::cout << "Capacity="s << md.getCapacity() << '\n';

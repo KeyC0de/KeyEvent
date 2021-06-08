@@ -75,7 +75,7 @@ public:
 
 
 //============================================================
-//	\class	DataMessage<T>
+//	\class	MessageData<T>
 //
 //	\author	KeyC0de
 //	\date	2019/12/10 3:01
@@ -84,14 +84,14 @@ public:
 //			virtual contructed, move only
 //=============================================================
 template<class T>
-class DataMessage
+class MessageData
 	:
 	public Message
 {
 	std::unique_ptr<T> m_pPayload;
 public:
 	template<typename ... TParams>
-	DataMessage( class Entity* src,
+	MessageData( class Entity* src,
 		const std::vector<class Entity*>& pDests,
 		Message::Type type,
 		TParams&&... args )
@@ -100,15 +100,15 @@ public:
 		m_pPayload( std::make_unique<T>( std::forward<TParams>( args )... ) )
 	{}
 
-	virtual ~DataMessage() noexcept = default;
+	virtual ~MessageData() noexcept = default;
 	
-	DataMessage( DataMessage&& rhs ) noexcept
+	MessageData( MessageData&& rhs ) noexcept
 		:
 		Message( std::move( rhs ) ),
 		m_pPayload{std::move( rhs.m_pPayload )}
 	{}
 	
-	DataMessage& operator=( DataMessage&& rhs ) noexcept
+	MessageData& operator=( MessageData&& rhs ) noexcept
 	{
 		if ( this != &rhs )
 		{

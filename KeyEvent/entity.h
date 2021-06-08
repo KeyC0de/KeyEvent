@@ -7,7 +7,7 @@
 // An Entity class for message testing
 
 // example message Payload1
-// for `DataMessage`s - not used here
+// for `MessageData`s - not used here
 //struct Payload1
 //{
 //	int m_damage;

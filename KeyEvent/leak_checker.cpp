@@ -1,7 +1,7 @@
 #if defined(_DEBUG) || defined(DEBUG) || defined(debug) || defined(_debug)
 
-#	include "leak_checker.h"
 #	include <iostream>
+#	include "leak_checker.h"
 
 namespace debugLeak
 {
@@ -18,6 +18,7 @@ public:
 	{
 		if ( anyMemoryLeaks() )
 		{
+			OutputDebugStringW( L"Leaking..\n" );
 			std::cerr << "Leaking.." << '\n';
 		}
 		else
