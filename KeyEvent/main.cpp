@@ -24,15 +24,19 @@ void doSomeWork()
 
 int main()
 {
-	std::cout << std::boolalpha << '\n';
+	std::cout << std::boolalpha;
 
-	std::thread{ []() { doSomeWork(); } }.join();
-	std::thread{ []() { doSomeWork(); } }.join();
+	std::thread{
+		[]() { doSomeWork(); }
+	}.join();
+	std::thread{
+		[]() { doSomeWork(); }
+	}.join();
 
 	// Example where the communication involves 2 entities
 	using namespace std::string_literals;
-	Entity e1{ "Nikos"s };
-	Entity e2{ "Mary"s, 125 };
+	Entity e1{"Nikos"s};
+	Entity e2{"Mary"s, 125};
 
 	e1.printInfo();
 	e2.printInfo();
@@ -50,7 +54,7 @@ int main()
 	std::vector<Entity*> recipients;
 	recipients.push_back( &e2 );
 
-	MessageCall* msg = new MessageCall{ &e1,
+	MessageCall* msg = new MessageCall{&e1,
 		recipients,
 		Message::Type::Damage,
 		std::move( e1CallLater )};
@@ -60,14 +64,22 @@ int main()
 
 	// check how many messages are in the queue
 	auto& md = MessageDispatcher::getInstance();
-	std::cout << "Size="s << md.getSize() << '\n';
-	std::cout << "Capacity="s << md.getCapacity() << '\n';
+	std::cout << "Size="s
+		<< md.getSize()
+		<< '\n';
+	std::cout << "Capacity="s
+		<< md.getCapacity()
+		<< '\n';
 
 	// dispatch messages
 	md.dispatchAll();
 
-	std::cout << "Size="s << md.getSize() << '\n';
-	std::cout << "Capacity="s << md.getCapacity() << '\n';
+	std::cout << "Size="s
+		<< md.getSize()
+		<< '\n';
+	std::cout << "Capacity="s
+		<< md.getCapacity()
+		<< '\n';
 
 	e1.printInfo();
 	e2.printInfo();
