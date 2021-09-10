@@ -28,14 +28,11 @@ class MessageBus final
 	std::size_t m_size = 0;
 	mutable std::mutex m_mu;
 	std::condition_variable m_cond;
-
 private:
-	MessageBus();
+	MessageBus() = default;
 	MessageBus( int initialCapacity );
-
 private:
 	void removeFrontByBackSwap();
-
 public:
 	MessageBus( const MessageBus& rhs ) = delete;
 	MessageBus& operator=( const MessageBus& rhs ) = delete;
@@ -74,7 +71,7 @@ public:
 //	\date	2019/12/09 17:15
 //
 //	\brief	Meyer's singleton
-//			contains the message queue
+//			owns & manages the message queue
 //=============================================================
 class MessageDispatcher final
 {
@@ -85,7 +82,6 @@ public:
 	~MessageDispatcher() noexcept = default;
 	MessageDispatcher( const MessageDispatcher& fs ) = delete;
 	MessageDispatcher& operator=( const MessageDispatcher& fs ) = delete;
-
 	MessageDispatcher( MessageDispatcher&& rhs ) noexcept;
 	MessageDispatcher& operator=( MessageDispatcher&& rhs ) noexcept;
 

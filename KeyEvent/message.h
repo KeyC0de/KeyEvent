@@ -14,6 +14,7 @@ class DelayedFunc;
 //	\date	2019/12/09 13:23
 //
 //	\brief	The Message - Enveloppe
+//				move only type
 //=============================================================
 class Message
 {
@@ -31,7 +32,6 @@ private:
 	class Entity* m_pSender;
 	std::vector<class Entity*> m_pReceivers;
 	Message::Type m_type;
-
 public:
 	Message( class Entity* srcId, const std::vector<class Entity*>& destId,
 		Message::Type type );
@@ -56,13 +56,12 @@ public:
 //	\date	2019/12/10 3:01
 //
 //	\brief	a Message with arbitrary callable object
-//			virtual contructed, move only
 //=============================================================
 class MessageCall
 	:
 	public Message
 {
-	std::unique_ptr<class DelayedFunc> m_pDelFunc;
+	std::unique_ptr<class DelayedFunc> m_pFunc;
 public:
 	MessageCall( class Entity* psrc, const std::vector<class Entity*>& pDests,
 		Message::Type type, std::unique_ptr<DelayedFunc> df );
@@ -81,7 +80,6 @@ public:
 //	\date	2019/12/10 3:01
 //
 //	\brief	a Message with arbitrary data payload T
-//			virtual contructed, move only
 //=============================================================
 template<class T>
 class MessageData
@@ -96,25 +94,26 @@ public:
 		Message::Type type,
 		TParams&&... args )
 		:
-		Message( src, pDests, type ),
-		m_pPayload( std::make_unique<T>( std::forward<TParams>( args )... ) )
-	{}
+		Message{src, pDests, type},
+		m_pPayload{std::make_unique<T>( std::forward<TParams>( args )... )}
+	{
+
+	}
 
 	virtual ~MessageData() noexcept = default;
 	
 	MessageData( MessageData&& rhs ) noexcept
 		:
-		Message( std::move( rhs ) ),
+		Message{std::move( rhs )},
 		m_pPayload{std::move( rhs.m_pPayload )}
-	{}
+	{
+
+	}
 	
 	MessageData& operator=( MessageData&& rhs ) noexcept
 	{
-		if ( this != &rhs )
-		{
-			Message::operator=( std::move( rhs ) );
-			std::swap( m_pPayload, rhs.m_pPayload );
-		}
+		Message::operator=( std::move( rhs ) );
+		std::swap( m_pPayload, rhs.m_pPayload );
 		return *this;
 	}
 	

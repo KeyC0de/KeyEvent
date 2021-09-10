@@ -1,12 +1,11 @@
-#include "assertions.h"
 #include <iostream>
-
+#include "assertions.h"
 
 #if defined _DEBUG && !defined NDEBUG
 
-#ifdef __cplusplus
+#	ifdef __cplusplus
 extern "C" {
-#endif
+#	endif
 
 // builds the error string
 bool assertPrint( const char* expr,
@@ -35,8 +34,8 @@ bool assertPrint( const char* expr,
 	return false;
 }
 
-#ifdef __cplusplus
+#	ifdef __cplusplus
 }
-#endif
+#	endif
 
 #endif // _DEBUG

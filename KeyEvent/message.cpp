@@ -7,8 +7,8 @@ Message::Message( Entity* pSrc,
 	const std::vector<Entity*>& pDests,
 	Message::Type type )
 	:
-	m_pSender( pSrc ),
-	m_type( type )
+	m_pSender(pSrc),
+	m_type(type)
 {
 	for( Entity* dest : pDests )
 	{
@@ -23,9 +23,9 @@ Message::~Message() noexcept
 
 Message::Message( Message&& rhs ) noexcept
 	:
+	m_bHandled{rhs.m_bHandled},
 	m_pSender{rhs.m_pSender},
-	m_type{rhs.m_type},
-	m_bHandled{rhs.m_bHandled}
+	m_type{rhs.m_type}
 {
 	for( Entity* dest : rhs.m_pReceivers )
 	{
@@ -36,19 +36,15 @@ Message::Message( Message&& rhs ) noexcept
 
 Message& Message::operator=( Message&& rhs ) noexcept
 {
-	if ( this != &rhs )
-	{
-		m_pSender = rhs.m_pSender;
-		
-		for( Entity* dest : rhs.m_pReceivers )
-		{
-			m_pReceivers.emplace_back( dest );
-		}
-		rhs.m_pReceivers.clear();
+	m_bHandled = rhs.m_bHandled;
+	m_pSender = rhs.m_pSender;
+	m_type = rhs.m_type;
 
-		m_type = rhs.m_type;
-		m_bHandled = rhs.m_bHandled;
+	for( Entity* dest : rhs.m_pReceivers )
+	{
+		m_pReceivers.emplace_back( dest );
 	}
+	rhs.m_pReceivers.clear();
 	return *this;
 }
 
@@ -83,27 +79,28 @@ MessageCall::MessageCall( Entity* psrc,
 	Message::Type type,
 	std::unique_ptr<DelayedFunc> df )
 	:
-	Message( psrc, pDests, type ),
-	m_pDelFunc{ std::move( df )}
-{}
+	Message{psrc, pDests, type},
+	m_pFunc{std::move( df )}
+{
+
+}
 
 MessageCall::MessageCall( MessageCall&& rhs ) noexcept
 	:
-	Message( std::move( rhs ) ),
-	m_pDelFunc{ std::move( rhs.m_pDelFunc )}
-{}
+	Message{std::move( rhs )},
+	m_pFunc{std::move( rhs.m_pFunc )}
+{
+
+}
 
 MessageCall& MessageCall::operator=( MessageCall&& rhs ) noexcept
 {
-	if ( this != &rhs )
-	{
-		Message::operator=( std::move( rhs ) );
-		std::swap( m_pDelFunc, rhs.m_pDelFunc );
-	}
+	Message::operator=( std::move( rhs ) );
+	std::swap( m_pFunc, rhs.m_pFunc );
 	return *this;
 }
 
 DelayedFunc* MessageCall::getCallable() const noexcept
 {
-	return m_pDelFunc.get();
+	return m_pFunc.get();
 }

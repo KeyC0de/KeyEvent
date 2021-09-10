@@ -3,8 +3,10 @@
 
 DelayedFunc::DelayedFunc( TF&& f )
 	:
-	m_f( std::forward<TF>( f ) )
-{}
+	m_f{std::forward<TF>( f )}
+{
+
+}
 
 DelayedFunc::~DelayedFunc() noexcept
 {
@@ -14,25 +16,25 @@ DelayedFunc::~DelayedFunc() noexcept
 DelayedFunc::DelayedFunc( DelayedFunc&& rhs ) noexcept
 	:
 	m_f{std::move( rhs.m_f )}
-{}
+{
+
+}
 
 DelayedFunc& DelayedFunc::operator=( DelayedFunc&& rhs ) noexcept
 {
-	if ( this != &rhs )
-	{
-		this->swap( rhs );
-	}
+	this->swap( rhs );
 	return *this;
+}
+
+void DelayedFunc::operator()() const
+{
+	m_f();
 }
 
 void DelayedFunc::swap( DelayedFunc& rhs ) noexcept
 {
-	std::swap( m_f, rhs.m_f );
-}
-
-void DelayedFunc::call() const
-{
-	m_f();
+	std::swap( m_f,
+		rhs.m_f );
 }
 
 void DelayedFunc::reset() noexcept

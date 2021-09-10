@@ -6,9 +6,9 @@
 extern "C" {
 #	endif
 
-//#		define LSTR( expr ) L ## expr
-//#		define STRINGIFY( expr ) LSTR( #expr )
-#		define STRINGIFY( expr ) #expr
+//#	define LSTR( expr ) L ## expr
+//#	define STRINGIFY( expr ) LSTR( #expr )
+#	define STRINGIFY( expr ) #expr
 extern bool assertPrint( const char* expr,
 	const char* file,
 	int line,
@@ -16,12 +16,19 @@ extern bool assertPrint( const char* expr,
 	const char* msg );
 
 // assert that arg is true, if not print error
-#		define ASSERT( arg, msg ) (!(arg) \
+#	define ASSERT( arg, msg ) (!(arg) \
+	&& assertPrint( STRINGIFY( arg ),\
+		__FILE__,\
+		__LINE__,\
+		__FUNCTION__,\
+		msg ) )
+
+// assert with the optional argument not supplied
+#	define ASSERTO( arg ) (!(arg) \
 			&& assertPrint( STRINGIFY( arg ),\
 				__FILE__,\
 				__LINE__,\
-				__FUNCTION__,\
-				msg ) )
+				__FUNCTION__) )
 #	ifdef __cplusplus
 }
 #	endif

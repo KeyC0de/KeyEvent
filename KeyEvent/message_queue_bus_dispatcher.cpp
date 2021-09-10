@@ -10,33 +10,31 @@ void MessageBus::removeFrontByBackSwap()
 	m_vec.pop_back();
 }
 	
-MessageBus::MessageBus()
-	:
-	m_vec{}
-{}
-
 MessageBus::MessageBus( int initialCapacity )
 	:
-	m_vec( initialCapacity )
-{}
+	m_vec(initialCapacity)
+{
+
+}
 
 MessageBus::MessageBus( MessageBus&& rhs ) noexcept
 	:
-	m_vec{std::move( rhs.m_vec )}
-{}
+	m_vec{std::move( rhs.m_vec )},
+	m_size(rhs.m_size)
+{
+
+}
 
 MessageBus& MessageBus::operator=( MessageBus&& rhs ) noexcept
 {
-	if ( this != &rhs )
-	{
-		std::swap( m_vec, rhs.m_vec );
-	}
+	std::swap( m_vec, rhs.m_vec );
+	m_size = rhs.m_size;
 	return *this;
 }
 
 void MessageBus::enqueue( class Message* msg )
 {
-	std::lock_guard<std::mutex> lg{ m_mu };
+	std::lock_guard<std::mutex> lg{m_mu};
 	m_vec.emplace_back( msg );
 	++m_size;
 	m_cond.notify_one();
@@ -44,13 +42,15 @@ void MessageBus::enqueue( class Message* msg )
 
 std::unique_ptr<class Message> MessageBus::dequeue()
 {
-	std::unique_lock<std::mutex> ul{ m_mu };
+	std::unique_lock<std::mutex> ul{m_mu};
 
-	m_cond.wait( ul,
-		[this] () -> bool { return !m_vec.empty(); } );
 	if ( m_vec.empty() )
 	{
-		throw std::runtime_error{ "Attempted to pop from empty Queue." };
+		throw std::runtime_error{"Attempted to pop from empty Queue."};
+	}
+	while ( m_vec.empty() )
+	{
+		m_cond.wait( ul );
 	}
 	std::unique_ptr<class Message> pOut = std::move( m_vec.back() );
 	m_vec.pop_back();
@@ -60,28 +60,26 @@ std::unique_ptr<class Message> MessageBus::dequeue()
 
 class Message* MessageBus::peekFront() const noexcept
 {
-	std::lock_guard<std::mutex> lg{ m_mu };
+	std::lock_guard<std::mutex> lg{m_mu};
 	return m_vec.front().get();
 }
 
 class Message* MessageBus::peekBack() const noexcept
 {
-	std::lock_guard<std::mutex> lg{ m_mu };
+	std::lock_guard<std::mutex> lg{m_mu};
 	return m_vec.back().get();
 }
 
 MessageBus::operator bool()
 {
-	std::lock_guard<std::mutex> lg{ m_mu };
+	std::lock_guard<std::mutex> lg{m_mu};
 	return !m_vec.empty();
 }
 
 class Message* MessageBus::operator[]( std::size_t index )
 {
-	std::lock_guard<std::mutex> lg{ m_mu };
-	if ( m_vec.empty()
-		|| index < 0
-		|| index >= m_vec.size() )
+	std::lock_guard<std::mutex> lg{m_mu};
+	if ( m_vec.empty() || index < 0 || index >= m_vec.size() )
 	{
 		throw std::out_of_range( "Invalid index." );
 	}
@@ -90,10 +88,8 @@ class Message* MessageBus::operator[]( std::size_t index )
 
 const class Message* MessageBus::operator[]( std::size_t index ) const
 {
-	std::lock_guard<std::mutex> lg{ m_mu };
-	if ( m_vec.empty()
-		|| index < 0
-		|| index >= m_vec.size() )
+	std::lock_guard<std::mutex> lg{m_mu};
+	if ( m_vec.empty() || index < 0 || index >= m_vec.size() )
 	{
 		throw std::out_of_range( "Invalid index." );
 	}
@@ -123,20 +119,21 @@ std::size_t MessageBus::getCapacity() const noexcept
 
 MessageDispatcher::MessageDispatcher( int initialCapacity )
 	:
-	m_mb{initialCapacity}
-{}
+	m_mb(initialCapacity)
+{
+
+}
 
 MessageDispatcher::MessageDispatcher( MessageDispatcher&& rhs ) noexcept
 	:
 	m_mb{std::move( rhs.m_mb )}
-{}
+{
+
+}
 
 MessageDispatcher& MessageDispatcher::operator=( MessageDispatcher&& rhs ) noexcept
 {
-	if ( this != &rhs )
-	{
-		std::swap( m_mb, rhs.m_mb );
-	}
+	std::swap( m_mb, rhs.m_mb );
 	return *this;
 }
 

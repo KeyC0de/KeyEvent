@@ -7,8 +7,8 @@
 //===================================================
 //	\function	DelayedFunc
 //	\brief  returns a ready-made callable with its arguments,
-//			packaged in a std::unique_ptr
-//			able to be inserted in any container or used for whatever purpose
+//				packaged in a std::unique_ptr
+//				able to be inserted in any container or used for whatever purpose
 //			utilizes std::function for type erasure and std::bind for argument packing
 //	\date	2020/11/05 3:17
 class DelayedFunc
@@ -19,7 +19,6 @@ private:
 	DelayedFunc( TF&& f );
 
 public:
-
 	template <typename TFunction,
 		typename... TArgs>
 	static std::unique_ptr<DelayedFunc> setup( TFunction&& f,
@@ -51,8 +50,8 @@ public:
 	DelayedFunc( DelayedFunc&& rhs ) noexcept;
 	DelayedFunc& operator=( DelayedFunc&& rhs ) noexcept;
 
+	void operator()() const;
 	void swap( DelayedFunc& rhs ) noexcept;
-	void call() const;
 	void reset() noexcept;
 
 	inline operator bool() const noexcept;

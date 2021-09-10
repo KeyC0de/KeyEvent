@@ -59,7 +59,7 @@ void Entity::onMessageReceived( std::unique_ptr<class Message> msg )
 	auto pDataMsg = dynamic_cast<MessageCall*>( msg.get() );
 
 	auto callback = pDataMsg->getCallable();
-	callback->call();
+	(*callback)();
 	
 	switch ( pDataMsg->getType() )
 	{
