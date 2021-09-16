@@ -5,7 +5,7 @@
 
 
 class Entity;
-class DelayedFunc;
+class Operation;
 
 //============================================================
 //	\class	Message
@@ -61,15 +61,15 @@ class MessageCall
 	:
 	public Message
 {
-	std::unique_ptr<class DelayedFunc> m_pFunc;
+	std::unique_ptr<class Operation> m_pFunc;
 public:
 	MessageCall( class Entity* psrc, const std::vector<class Entity*>& pDests,
-		Message::Type type, std::unique_ptr<DelayedFunc> df );
+		Message::Type type, std::unique_ptr<Operation> df );
 	virtual ~MessageCall() noexcept = default;
 	MessageCall( MessageCall&& rhs ) noexcept;
 	MessageCall& operator=( MessageCall&& rhs ) noexcept;
 
-	class DelayedFunc* getCallable() const noexcept;
+	class Operation* getCallable() const noexcept;
 };
 
 

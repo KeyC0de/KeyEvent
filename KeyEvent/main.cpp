@@ -2,7 +2,7 @@
 #include <thread>
 #include <random>
 #include <string>
-#include "delayed_function.h"
+#include "operation.h"
 #include "message.h"
 #include "message_queue_bus_dispatcher.h"
 #include "entity.h"
@@ -47,7 +47,7 @@ int main()
 	// suppose we want e1 to send a "Damage" message to e2
 	// you can create whatever type of Message::Type you want
 	//	as well as call whichever function of e2 you want
-	auto e1CallLater( DelayedFunc::setup( &Entity::damage,
+	auto e1CallLater( Operation::setup( &Entity::damage,
 		&e2,
 		50 ) );
 	// e1 creates the message to dispatch it

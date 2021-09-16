@@ -124,7 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="assertions.cpp" />
-    <ClCompile Include="delayed_function.cpp" />
+    <ClCompile Include="operation.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="leak_checker.cpp" />
     <ClCompile Include="message.cpp" />
@@ -136,7 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assertions.h" />
-    <ClInclude Include="delayed_function.h" />
+    <ClInclude Include="operation.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="leak_checker.h" />
     <ClInclude Include="message_queue_bus_dispatcher.h" />

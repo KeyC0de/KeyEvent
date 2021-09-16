@@ -1,5 +1,5 @@
 #include "message.h"
-#include "delayed_function.h"
+#include "operation.h"
 #include "entity.h"
 
 
@@ -77,7 +77,7 @@ void Message::setHandled( bool b ) noexcept
 MessageCall::MessageCall( Entity* psrc,
 	const std::vector<Entity*>& pDests,
 	Message::Type type,
-	std::unique_ptr<DelayedFunc> df )
+	std::unique_ptr<Operation> df )
 	:
 	Message{psrc, pDests, type},
 	m_pFunc{std::move( df )}
@@ -100,7 +100,7 @@ MessageCall& MessageCall::operator=( MessageCall&& rhs ) noexcept
 	return *this;
 }
 
-DelayedFunc* MessageCall::getCallable() const noexcept
+Operation* MessageCall::getCallable() const noexcept
 {
 	return m_pFunc.get();
 }
