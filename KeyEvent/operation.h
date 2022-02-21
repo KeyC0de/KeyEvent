@@ -17,38 +17,34 @@ class Operation
 	TF m_f;
 private:
 	Operation( TF&& f );
-
 public:
-	template <typename TFunction,
-		typename... TArgs>
-	static std::unique_ptr<Operation> setup( TFunction&& f,
-		TArgs&&... args )
-	{// function pointers
-		return std::unique_ptr<Operation>( new Operation(
-			std::bind( std::forward<TFunction>( f ),
-				std::forward<TArgs>( args )... ) ) );
-	}
-	// TRet( *f )( std::forward<TArgs>( args )... );
-
-	template <typename TMethod,
-		typename T,
-		typename ...TArgs>
-	static std::unique_ptr<Operation> setup( TMethod&& mf,
-		T&& obj,
-		TArgs&& ...args )
-	{// member function pointers
-		return std::unique_ptr<Operation>( new Operation(
-			std::bind( std::forward<TMethod>( mf ),
-				std::forward<T>( obj ),
-				std::forward<TArgs>( args )... ) ) );
-	}
-	//( std::forward<T>( obj ).*mf )( std::forward<TArgs>( args )... ); -> TRet
-
 	~Operation() noexcept;
 	Operation( const Operation& rhs ) = delete;
 	Operation& operator=( const Operation& rhs ) = delete;
 	Operation( Operation&& rhs ) noexcept;
 	Operation& operator=( Operation&& rhs ) noexcept;
+
+	template <typename TFunction, typename... TArgs>
+	static std::unique_ptr<Operation> setup( TFunction&& f,
+		TArgs&&... args )
+	{// function pointers
+		return std::unique_ptr<Operation>( new Operation{
+			std::bind( std::forward<TFunction>( f ),
+				std::forward<TArgs>( args )... ) } );
+	}
+	// TRet( *f )( std::forward<TArgs>( args )... );
+
+	template <typename TMethod, typename T, typename ...TArgs>
+	static std::unique_ptr<Operation> setup( TMethod&& mf,
+		T&& obj,
+		TArgs&& ...args )
+	{// member function pointers
+		return std::unique_ptr<Operation>( new Operation{
+			std::bind( std::forward<TMethod>( mf ),
+				std::forward<T>( obj ),
+				std::forward<TArgs>( args )... ) } );
+	}
+	//( std::forward<T>( obj ).*mf )( std::forward<TArgs>( args )... ); -> TRet
 
 	void operator()() const;
 	void swap( Operation& rhs ) noexcept;

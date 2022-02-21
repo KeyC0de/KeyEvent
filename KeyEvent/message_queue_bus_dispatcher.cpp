@@ -6,7 +6,8 @@
 
 void MessageBus::removeFrontByBackSwap()
 {
-	std::swap( m_vec.front(), m_vec.back() );
+	std::swap( m_vec.front(),
+		m_vec.back() );
 	m_vec.pop_back();
 }
 	
