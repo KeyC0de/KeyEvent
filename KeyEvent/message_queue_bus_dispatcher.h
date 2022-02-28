@@ -51,14 +51,11 @@ public:
 	std::unique_ptr<class Message> dequeue();
 	class Message* peekFront() const noexcept;
 	class Message* peekBack() const noexcept;
-
 	explicit operator bool();
 	class Message* operator[]( std::size_t index );
 	const class Message* operator[]( std::size_t index ) const;
-
 	std::size_t getSize() const noexcept;
 	std::size_t getCapacity() const noexcept;
-
 	inline bool isEmpty() const noexcept;
 	void clear();
 };

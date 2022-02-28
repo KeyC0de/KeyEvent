@@ -35,7 +35,7 @@ MessageBus& MessageBus::operator=( MessageBus&& rhs ) noexcept
 
 void MessageBus::enqueue( class Message* msg )
 {
-	std::lock_guard<std::mutex> lg{m_mu};
+	std::unique_lock<std::mutex> lg{m_mu};
 	m_vec.emplace_back( msg );
 	++m_size;
 	m_cond.notify_one();
