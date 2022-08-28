@@ -28,9 +28,7 @@ public:
 	static std::unique_ptr<Operation> setup( TFunction&& f,
 		TArgs&&... args )
 	{// function pointers
-		return std::unique_ptr<Operation>( new Operation{
-			std::bind( std::forward<TFunction>( f ),
-				std::forward<TArgs>( args )... ) } );
+		return std::make_unique<Operation>( std::bind( std::forward<TFunction>( f ), std::forward<TArgs>( args )... ) );
 	}
 	// TRet( *f )( std::forward<TArgs>( args )... );
 
@@ -39,10 +37,7 @@ public:
 		T&& obj,
 		TArgs&& ...args )
 	{// member function pointers
-		return std::unique_ptr<Operation>( new Operation{
-			std::bind( std::forward<TMethod>( mf ),
-				std::forward<T>( obj ),
-				std::forward<TArgs>( args )... ) } );
+		return std::unique_ptr<Operation>( new Operation{std::bind( std::forward<TMethod>( mf ), std::forward<T>( obj ), std::forward<TArgs>( args )... )} );
 	}
 	//( std::forward<T>( obj ).*mf )( std::forward<TArgs>( args )... ); -> TRet
 
